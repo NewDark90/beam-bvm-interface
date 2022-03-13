@@ -21,5 +21,6 @@ Run build.ps1 in order to build the project. You'll need to provide the specific
 The tags "beam-X.X.X" will automatically display for ease of entry, but any tag will be valid. 
 
 If it works, you should have generated a crate library that looks like this: 
+
 ![image](https://user-images.githubusercontent.com/12650208/158047523-c16e109a-8fa8-4911-864f-5262cd3221be.png)
 
