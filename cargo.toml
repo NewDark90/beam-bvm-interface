@@ -1,5 +1,5 @@
 [package]
-name = "beam-bvm-interface"
+name = "beam_bvm_interface"
 version = "1.0.0"
 edition = "2018"
 
