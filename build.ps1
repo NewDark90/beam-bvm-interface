@@ -18,7 +18,7 @@ try {
 
     Invoke-Expression -Command "git checkout tags/$selectedTag"
     New-Item -ItemType Directory -Force -Path "$buildRoot/src/"
-    Invoke-Expression -Command "bindgen ""./bvm/Shaders/common.h"" -o ""../build/$selectedTag/src/lib.rs"" --no-layout-tests --enable-cxx-namespaces --distrust-clang-mangling -- -x c++ -I ""$Env:BOOST_ROOT"" -I ""./"""
+    Invoke-Expression -Command "bindgen ""./bvm/Shaders/common.h"" -o ""../build/$selectedTag/src/lib.rs"" --no-layout-tests --enable-cxx-namespaces --distrust-clang-mangling --allowlist-type Env.* --allowlist-function Env.* --allowlist-type Env.* -- -x c++ -I ""$Env:BOOST_ROOT"" -I ""./"""
     Copy-Item -Path "../cargo.bvm-template.toml" -Destination "$buildRoot/cargo.toml" -Force
 
     $versionMatch = ($selectedTag | Select-String $versionRegex)

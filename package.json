@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "rust-bindgen": "cross-env bindgen \"./beam/bvm/Shaders/common.h\" -o \"./lib/bvm/src/lib.rs\" --no-layout-tests --enable-cxx-namespaces --distrust-clang-mangling -- -x c++ -I \"%BOOST_ROOT%\" -I \"./beam\"",
-    "build": "npm-run-all --parallel rust-wasm-build:**",
-    "rust-wasm-build:name-me:contract": "wasm-pack build lib/name-me-contract --release --target web"
+    "rust-bindgen": "npm-run-all --parallel rust-bindgen:**",
+    "rust-bindgen:current-branch": "cross-env bindgen \"./beam/bvm/Shaders/common.h\" -o \"./build/current-branch/src/lib.rs\" --no-layout-tests --enable-cxx-namespaces --distrust-clang-mangling --allowlist-type Env.* --allowlist-function Env.* --allowlist-type Env.* --allowlist-var Env.* -- -x c++ -I \"%BOOST_ROOT%\" -I \"./beam\"",
+    "rust-bindgen:select-branch": "powershell \".\\build.ps1\""
   },
   "repository": {
     "type": "git",
