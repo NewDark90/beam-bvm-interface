@@ -1,24 +1,42 @@
+<#
+    
+#>
+param (
+    # height of largest column without top bar
+    [switch]$currentBranch = $false
+)
+
 $originalDir = Get-Location;
 $versionRegex = "(\d+)\.(\d+)\.(\d+)"
 $selectedTag = ""
 
 try {
-    Invoke-Expression -Command "git submodule update"
 
     Set-Location "${PSScriptRoot}\beam"
+    Invoke-Expression -Command "git fetch --all"
 
-    $tags = Invoke-Expression -Command "git tag --list"
-    $tags | Select-String "beam-$versionRegex" | Write-Output 
-
-    while ($selectedTag -notin $tags)
+    if (!$currentBranch)
     {
-        $selectedTag = Read-Host "Input a git tag from the beam repository to build"
+        $tags = Invoke-Expression -Command "git tag --list"
+        $tags | Select-String "beam-$versionRegex" | Write-Output 
+
+        while ($selectedTag -notin $tags)
+        {
+            $selectedTag = Read-Host "Input a git tag from the beam repository to build"
+        }
+        Invoke-Expression -Command "git checkout tags/$selectedTag"
     }
+    else {
+        $selectedTag = "current-branch"
+    }
+
     $buildRoot =  "../build/$selectedTag"
 
-    Invoke-Expression -Command "git checkout tags/$selectedTag"
     New-Item -ItemType Directory -Force -Path "$buildRoot/src/"
-    Invoke-Expression -Command "bindgen ""./bvm/Shaders/common.h"" -o ""../build/$selectedTag/src/lib.rs"" --no-layout-tests --enable-cxx-namespaces --distrust-clang-mangling --allowlist-type Env.* --allowlist-function Env.* --allowlist-type Env.* -- -x c++ -I ""$Env:BOOST_ROOT"" -I ""./"""
+    Remove-Item "$buildRoot/src/*" -Recurse -Force
+
+    $rawLine = "pub type c_void = ::core::ffi::c_void; pub type c_char = i8;"
+    Invoke-Expression -Command "bindgen ""./bvm/Shaders/common.h"" -o ""../build/$selectedTag/src/lib.rs"" --module-raw-line ""root"" ""$rawLine"" --no-layout-tests --enable-cxx-namespaces --distrust-clang-mangling --use-core --ctypes-prefix ""root"" -- -x c++ -I ""$Env:BOOST_ROOT"" -I ""./"" -U _MSC_VER"
     Copy-Item -Path "../cargo.bvm-template.toml" -Destination "$buildRoot/cargo.toml" -Force
 
     $versionMatch = ($selectedTag | Select-String $versionRegex)

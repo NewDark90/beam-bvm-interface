@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "rust-bindgen": "npm-run-all --parallel rust-bindgen:**",
-    "rust-bindgen:current-branch": "cross-env bindgen \"./beam/bvm/Shaders/common.h\" -o \"./build/current-branch/src/lib.rs\" --no-layout-tests --enable-cxx-namespaces --distrust-clang-mangling --allowlist-type Env.* --allowlist-function Env.* --allowlist-type Env.* --allowlist-var Env.* -- -x c++ -I \"%BOOST_ROOT%\" -I \"./beam\"",
+    "rust-bindgen:current-branch": "powershell \".\\build.ps1\" -currentBranch",
     "rust-bindgen:select-branch": "powershell \".\\build.ps1\""
   },
   "repository": {
