@@ -36,7 +36,19 @@ try {
     Remove-Item "$buildRoot/src/*" -Recurse -Force
 
     $rawLine = "pub type c_void = ::core::ffi::c_void; pub type c_char = i8;"
-    Invoke-Expression -Command "bindgen ""./bvm/Shaders/common.h"" -o ""../build/$selectedTag/src/lib.rs"" --module-raw-line ""root"" ""$rawLine"" --no-layout-tests --enable-cxx-namespaces --distrust-clang-mangling --use-core --ctypes-prefix ""root"" -- -x c++ -I ""$Env:BOOST_ROOT"" -I ""./"" -U _MSC_VER"
+    $bindgenCommand = [String]::Join(" ", 
+        "bindgen ""./bvm/Shaders/common.h""", #file target that has our needed types
+        "-o ""../build/$selectedTag/src/lib.rs""", #file to build
+        "--no-layout-tests", #no need
+        "--enable-cxx-namespaces", #use c++
+        "--distrust-clang-mangling", 
+        "--use-core", #prefers non-std types
+        "--module-raw-line ""root"" ""$rawLine""", #specifically types out void and c_char instead of std
+        "--ctypes-prefix ""root""", #non-std types given root prefix to go with module-raw-line
+        "--with-derive-default", #Adds struct defaults
+        "-- -x c++ -I ""$Env:BOOST_ROOT"" -I ""./"" -U _MSC_VER" #Clang parameters
+    );
+    Invoke-Expression -Command $bindgenCommand
     Copy-Item -Path "../cargo.bvm-template.toml" -Destination "$buildRoot/cargo.toml" -Force
 
     $versionMatch = ($selectedTag | Select-String $versionRegex)
