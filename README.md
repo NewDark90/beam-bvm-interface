@@ -1,7 +1,5 @@
 # beam-bvm-interface
-A rust package for referencing all of the Beam Virtual Machine methods for dapps.
-
-This is mostly here for me to be able to build and easily ship the crates for any bvm version, but you are welcome to use if you want to build the library yourself.
+A rust crate for referencing all of the Beam Virtual Machine methods and structs for dapps.
 
 ## Requirements
 

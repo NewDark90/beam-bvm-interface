@@ -12,7 +12,7 @@ $selectedTag = ""
 
 try {
 
-    Set-Location "${PSScriptRoot}\beam"
+    Set-Location "${PSScriptRoot}\..\beam"
     Invoke-Expression -Command "git fetch --all"
 
     if (!$currentBranch)
@@ -49,12 +49,12 @@ try {
         "-- -x c++ -I ""$Env:BOOST_ROOT"" -I ""./"" -U _MSC_VER" #Clang parameters
     );
     Invoke-Expression -Command $bindgenCommand
-    Copy-Item -Path "../cargo.bvm-template.toml" -Destination "$buildRoot/cargo.toml" -Force
+    Copy-Item -Path "../build-template/*" -Destination "$buildRoot/" -Recurse -Force
 
     $versionMatch = ($selectedTag | Select-String $versionRegex)
     if ($versionMatch.Matches.Success)
     {
-        (Get-Content "$buildRoot/cargo.toml").replace('{VERSION}', $versionMatch.Matches) | Set-Content "$buildRoot/cargo.toml"
+        (Get-Content "$buildRoot/Cargo.toml").replace('{VERSION}', $versionMatch.Matches) | Set-Content "$buildRoot/Cargo.toml"
     }
     else 
     {

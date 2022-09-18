@@ -1,8 +1,0 @@
-[package]
-name = "beam_bvm_interface"
-version = "{VERSION}"
-edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-[lib]
-crate-type = ["cdylib", "rlib"]

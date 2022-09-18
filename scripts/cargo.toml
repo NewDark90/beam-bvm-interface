@@ -1,0 +1,8 @@
+[package]
+name = "script"
+version = "{VERSION}"
+edition = "2021"
+license = "GPL-3.0"
+
+[build-dependencies]
+bindgen = { version = "0.53.1" }

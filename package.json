@@ -5,8 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "rust-bindgen": "npm-run-all --parallel rust-bindgen:**",
-    "rust-bindgen:current-branch": "powershell \".\\build.ps1\" -currentBranch",
-    "rust-bindgen:select-branch": "powershell \".\\build.ps1\""
+    "rust-bindgen:current-branch": "powershell \".\\scripts\\build.ps1\" -currentBranch",
+    "rust-bindgen:select-branch": "powershell \".\\scripts\\build.ps1\""
   },
   "repository": {
     "type": "git",
