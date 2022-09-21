@@ -28,3 +28,5 @@ This assumes a workspace with a `contract` package, `app` package, and optional 
 5. Compiled wasm files will be in `./target/wasm32-wasi/release` directory
 
 After that you can use `app.wasm` and `contract.wasm` files in the same way you use it in Beam's contracts (see https://github.com/BeamMW/shader-sdk/wiki/Running-Beam-Shaders-using-CLI-Wallet).
+
+An example project can be used as a starter here: https://github.com/NewDark90/beam-bvm-starter
