@@ -35,15 +35,17 @@ try {
     New-Item -ItemType Directory -Force -Path "$buildRoot/src/"
     Remove-Item "$buildRoot/src/*" -Recurse -Force
 
-    $rawLine = "pub type c_void = ::core::ffi::c_void; pub type c_char = i8;"
+    $rawLine = "#![cfg_attr(not(feature = ""std""), no_std)]"
+    $rawModLine = "pub type c_void = ::core::ffi::c_void; pub type c_char = u8;"
     $bindgenCommand = [String]::Join(" ", 
         "bindgen ""./bvm/Shaders/common.h""", #file target that has our needed types
         "-o ""../build/$selectedTag/src/lib.rs""", #file to build
         "--no-layout-tests", #no need
         "--enable-cxx-namespaces", #use c++
         "--distrust-clang-mangling", 
+        "--raw-line ""$rawLine""",
         "--use-core", #prefers non-std types
-        "--module-raw-line ""root"" ""$rawLine""", #specifically types out void and c_char instead of std
+        "--module-raw-line ""root"" ""$rawModLine""", #specifically types out void and c_char instead of std
         "--ctypes-prefix ""root""", #non-std types given root prefix to go with module-raw-line
         "--with-derive-default", #Adds struct defaults
         "-- -x c++ -I ""$Env:BOOST_ROOT"" -I ""./"" -U _MSC_VER" #Clang parameters

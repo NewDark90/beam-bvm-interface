@@ -11,4 +11,4 @@ A direct interface to the Beam Virtual Machine functions and data structures
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["lib"]
